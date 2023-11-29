@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Диаграмма состояний</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+
+<script>
+    // Создаем диаграмму состояний для заказа блюд в ресторане
+    const states = ['Принят', 'Готовится', 'Готов', 'Доставляется', 'Доставлен'];
+
+    // Создаем переходы между состояниями
+    const transitions = [
+        { source: 'Принят', target: 'Готовится' },
+        { source: 'Готовится', target: 'Готов' },
+        { source: 'Готов', target: 'Доставляется' },
+        { source: 'Доставляется', target: 'Доставлен' }
+    ];
+
+    // Создаем SVG контейнер
+    const svg = d3.select("body").append("svg")
+        .attr("width", 600)
+        .attr("height", 200);
+
+    // Отображаем состояния
+    svg.selectAll("rect")
+        .data(states)
+        .enter().append("rect")
+        .attr("x", (d, i) => i * 100)
+        .attr("y", 50)
+        .attr("width", 80)
+        .attr("height", 30)
+        .attr("stroke", "black")
+        .attr("fill", "lightblue");
+
+    // Отображаем переходы
+    svg.selectAll("line")
+        .data(transitions)
+        .enter().append("line")
+        .attr("x1", d => states.indexOf(d.source) * 100 + 80)
+        .attr("y1", 65)
+        .attr("x2", d => states.indexOf(d.target) * 100)
+        .attr("y2", 65)
+        .attr("stroke", "black");
+
+    // Добавляем текст
+    svg.selectAll("text")
+        .data(states)
+        .enter().append("text")
+        .attr("x", (d, i) => i * 100 + 40)
+        .attr("y", 65)
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .text(d => d);
+</script>
+
+</body>
+</html>
